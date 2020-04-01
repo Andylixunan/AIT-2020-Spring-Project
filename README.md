@@ -47,17 +47,21 @@ An Example List with Embedded Items:
 ## Wireframes
 
 
-/list/create - page for creating a new shopping list
+/album/create - page for creating a new photo album
 
-![list create](documentation/list-create.png)
+![album create](documentation/album-create.png)
 
-/list - page for showing all shopping lists
+/album - page for showing all photo albums
 
-![list](documentation/list.png)
+![album](documentation/album.png)
 
-/list/slug - page for showing specific shopping list
+/album/slug - page for showing all photos in a specific photo album
 
-![list](documentation/list-slug.png)
+![album](documentation/album-slug.png)
+
+/photo/create = page for creating a new photo item in an album
+
+![photo create](documentation/photo-create.png)
 
 ## Site map
 
@@ -66,8 +70,6 @@ An Example List with Embedded Items:
 Here's a [complex example from wikipedia](https://upload.wikimedia.org/wikipedia/commons/2/20/Sitemap_google.jpg), but you can create one without the screenshots, drop shadows, etc. ... just names of pages and where they flow to.
 
 ## User Stories or Use Cases
-
-(___TODO__: write out how your application will be used through [user stories](http://en.wikipedia.org/wiki/User_story#Format) and / or [use cases](https://www.mongodb.com/download-center?jmp=docs&_ga=1.47552679.1838903181.1489282706#previous)_)
 
 1. as non-registered user, I can register a new account with the site
 2. as a user, I can log in to the site
@@ -97,7 +99,6 @@ Here's a [complex example from wikipedia](https://upload.wikimedia.org/wikipedia
 
 ## [Link to Initial Main Project File](app.js) 
 
-(___TODO__: create a skeleton Express application with a package.json, app.js, views folder, etc. ... and link to your initial app.js_)
 
 ## Annotations / References Used
 
