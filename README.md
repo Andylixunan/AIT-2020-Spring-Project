@@ -9,7 +9,9 @@ The content below is an example project proposal / requirements document. Replac
 (___TODO__: a brief one or two paragraph, high-level description of your project_)
 
 I intend to build a simple web application that mimics the functionality of a photo
-album in our daily life. 
+album in our daily life. In this app, users are allowed to register and login. And after 
+loging in, users can view, add, delete their photo collections. In addition, a single user
+can keep track of multiple photo albums.
 
 
 ## Data Model
