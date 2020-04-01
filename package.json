@@ -1,0 +1,25 @@
+{
+  "name": "andylixunan-final-project",
+  "version": "1.0.0",
+  "description": "## Overview",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nyu-csci-ua-0480-008-spring-2020/Andylixunan-final-project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nyu-csci-ua-0480-008-spring-2020/Andylixunan-final-project/issues"
+  },
+  "homepage": "https://github.com/nyu-csci-ua-0480-008-spring-2020/Andylixunan-final-project#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "hbs": "^4.1.0"
+  }
+}

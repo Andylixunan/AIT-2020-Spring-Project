@@ -46,7 +46,6 @@ An Example List with Embedded Items:
 
 ## Wireframes
 
-(___TODO__: wireframes for all of the pages on your site; they can be as simple as photos of drawings or you can use a tool like Balsamiq, Omnigraffle, etc._)
 
 /list/create - page for creating a new shopping list
 
