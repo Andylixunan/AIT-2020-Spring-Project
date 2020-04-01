@@ -1,12 +1,7 @@
-The content below is an example project proposal / requirements document. Replace the text below the lines marked "__TODO__" with details specific to your project. Remove the "TODO" lines.
-
-(___TODO__: your project name_)
-
 # Photo Album 
 
 ## Overview
 
-(___TODO__: a brief one or two paragraph, high-level description of your project_)
 
 I intend to build a simple web application that mimics the functionality of a photo
 album in our daily life. In this app, users are allowed to register and login. And after 
