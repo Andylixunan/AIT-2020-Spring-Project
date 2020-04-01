@@ -11,22 +11,19 @@ can keep track of multiple photo albums.
 
 ## Data Model
 
-(___TODO__: a description of your application's data and their relationships to each other_) 
+The application will store Users, Albums and Photos(url)
 
-The application will store Users, Lists and Items
+* users can have multiple albums (via references)
+* each album can have multiple photos' urls (by embedding)
 
-* users can have multiple lists (via references)
-* each list can have multiple items (by embedding)
-
-(___TODO__: sample documents_)
 
 An Example User:
 
 ```javascript
 {
-  username: "shannonshopper",
+  username: "photokeeper",
   hash: // a password hash,
-  lists: // an array of references to List documents
+  albums: // an array of references to album documents
 }
 ```
 
@@ -35,12 +32,11 @@ An Example List with Embedded Items:
 ```javascript
 {
   user: // a reference to a User object
-  name: "Breakfast foods",
-  items: [
-    { name: "pancakes", quantity: "9876", checked: false},
-    { name: "ramen", quantity: "2", checked: true},
-  ],
-  createdAt: // timestamp
+  name: "my first album",
+  photos: [
+    { name: "selfie", url: "www.foo.bar"},
+    { name: "me and parents", url: "www.bar.qux"},
+  ]
 }
 ```
 
