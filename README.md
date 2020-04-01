@@ -59,7 +59,7 @@ An Example List with Embedded Items:
 
 ![album](documentation/album-slug.png)
 
-/photo/create = page for creating a new photo item in an album
+/photo/create - page for creating a new photo item in an album
 
 ![photo create](documentation/photo-create.png)
 
