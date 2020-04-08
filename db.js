@@ -17,8 +17,6 @@ const User = new mongoose.Schema({
 const Photo = new mongoose.Schema({
   name: {type: String, required: true},
   url: {type: String, required: true},
-}, {
-  _id: true
 });
 
 // an album
