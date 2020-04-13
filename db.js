@@ -1,4 +1,3 @@
-// 1ST DRAFT DATA MODEL
 const mongoose = require('mongoose');
 
 // users
@@ -29,3 +28,9 @@ const Album = new mongoose.Schema({
 });
 
 // TODO: add remainder of setup for slugs, connection, registering models, etc. below
+
+mongoose.model('User', User);
+mongoose.model('Photo', Photo);
+mongoose.model('Album', Album);
+
+
