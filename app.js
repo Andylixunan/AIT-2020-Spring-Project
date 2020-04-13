@@ -29,4 +29,9 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
+app.get('/photo/create', (req, res) => {
+  res.render('createPhoto');
+
+});
+
 app.listen(3000);
