@@ -33,4 +33,5 @@ mongoose.model('User', User);
 mongoose.model('Photo', Photo);
 mongoose.model('Album', Album);
 
+mongoose.connect('mongodb://localhost/finalproject',  {useNewUrlParser: true, useUnifiedTopology: true });
 

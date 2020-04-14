@@ -1,10 +1,29 @@
 require('./db');
 
+const passport = require('passport');
+const Strategy = require('passport-facebook').Strategy;
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 
 const app = express();
+
+passport.use(new Strategy({
+  clientID: process.env['FACEBOOK_CLIENT_ID'],
+  clientSecret: process.env['FACEBOOK_CLIENT_SECRET'],
+  callbackURL: '/return'
+},
+function(accessToken, refreshToken, profile, cb) {
+  return cb(null, profile);
+}));
+passport.serializeUser(function(user, cb) {
+  cb(null, user);
+});
+
+passport.deserializeUser(function(obj, cb) {
+  cb(null, obj);
+});
+
 
 // enable sessions
 const session = require('express-session');
@@ -33,5 +52,10 @@ app.get('/photo/create', (req, res) => {
   res.render('createPhoto');
 
 });
+
+app.post('/photo/create', (req, res) => {
+  
+
+})
 
 app.listen(3000);
