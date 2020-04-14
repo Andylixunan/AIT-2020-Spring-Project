@@ -10,7 +10,7 @@ const app = express();
 const Photo = mongoose.model('Photo');
 const Album = mongoose.model('Album');
 const User = mongoose.model('User');
-/*
+
 passport.use(new Strategy({
   clientID: process.env['FACEBOOK_CLIENT_ID'],
   clientSecret: process.env['FACEBOOK_CLIENT_SECRET'],
@@ -26,7 +26,6 @@ passport.serializeUser(function(user, cb) {
 passport.deserializeUser(function(obj, cb) {
   cb(null, obj);
 });
-*/
 
 // enable sessions
 const session = require('express-session');
@@ -56,8 +55,13 @@ app.get('/photo/create', (req, res) => {
 });
 
 app.post('/photo/create', (req, res) => {
-  
-  res.redirect('/album');
+  const photoObj = new Photo({
+    name: req.body.photoName,
+    url: req.body.photoUrl
+    });
+  photoObj.save(function(err, varToStoreResult, count){
+    res.redirect('/album');
+  });
 })
 
 app.get('/album',(req, res)=>{
