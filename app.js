@@ -46,6 +46,10 @@ app.get('/album',(req, res)=>{
   res.render('album');
 });
 
+app.get('/album/create',(req, res)=>{
+
+  res.render('createAlbum');
+});
 
 app.post('/album/create',(req, res)=>{
   const albumObj = new Album({
