@@ -21,6 +21,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// route handlers
 app.get('/', (req, res) => {
   res.render('index');
 });
@@ -53,6 +55,13 @@ app.get('/photo/test', (req, res)=>{
     res.send(data);
   });
 })
+
+app.get('/album/test', (req, res)=>{
+  Album.find({}, function(err, data, count){
+    res.send(data);
+  });
+})
+
 
 
 

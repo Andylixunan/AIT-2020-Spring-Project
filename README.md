@@ -82,7 +82,7 @@ An Example List with Embedded Items:
 * (5 points) Integrate user authentication
     * I'm going to be using passport for user authentication
 * (3 points) Perform client side form validation using a custom JavaScript library
-    * I'm going to writea custom library for form validation for this project
+    * I'm going to write a custom library for form validation for this project
     * errors would be integrated into the DOM
 * (3 points) Unit testing with Mocha
     * I'm going to add unit testing with Mocha for my javascript code.
