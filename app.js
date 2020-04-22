@@ -1,15 +1,15 @@
 require('./db');
-
-const passport = require('passport');
-const Strategy = require('passport-local').Strategy;
 const express = require('express');
+const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const app = express();
 const Photo = mongoose.model('Photo');
 const Album = mongoose.model('Album');
 const User = mongoose.model('User');
+
+const passport = require('passport');
+const Strategy = require('passport-local').Strategy;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -45,11 +45,19 @@ app.get('/album',(req, res)=>{
 
   res.render('album');
 });
-app.get('/album/create',(req, res)=>{
 
-  res.render('createAlbum');
+
+app.post('/album/create',(req, res)=>{
+  const albumObj = new Album({
+    name: req.body.albumName,
+    photos: []
+  });
+  albumObj.save(function(err, varToStoreResult, count){
+    res.redirect('/album');
+  });
 });
 
+// add test site for viewing and testing all the working forms
 app.get('/photo/test', (req, res)=>{
   Photo.find({}, function(err, data, count){
     res.send(data);
@@ -61,8 +69,6 @@ app.get('/album/test', (req, res)=>{
     res.send(data);
   });
 })
-
-
 
 
 app.listen(process.env.PORT || 3000);
