@@ -9,7 +9,20 @@ const Album = mongoose.model('Album');
 const User = mongoose.model('User');
 
 const passport = require('passport');
-const Strategy = require('passport-local').Strategy;
+const LocalStrategy = require('passport-local').Strategy;
+
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.use(require('express-session')({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -42,7 +55,6 @@ app.post('/photo/create', (req, res) => {
 })
 
 app.get('/album',(req, res)=>{
-
   res.render('album');
 });
 

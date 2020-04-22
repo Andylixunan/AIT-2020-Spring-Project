@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const passportLocalMongoose = require('passport-local-mongoose');
 
 // users
 // * our site requires authentication...
@@ -9,6 +10,9 @@ const User = new mongoose.Schema({
   // password hash provided by authentication plugin
   album:  [{ type: mongoose.Schema.Types.ObjectId, ref: 'Album' }]
 });
+
+
+User.plugin(passportLocalMongoose);
 
 // a photo in an album
 // * includes the name and url of the photo
