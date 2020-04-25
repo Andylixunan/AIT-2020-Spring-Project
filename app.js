@@ -5,7 +5,6 @@ const path = require('path');
 const bodyParser = require('body-parser');
 //const urlSlug = require('url-slug');
 
-
 const mongoose = require('mongoose');
 const Photo = mongoose.model('Photo');
 const Album = mongoose.model('Album');
@@ -13,6 +12,7 @@ const User = mongoose.model('User');
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+app.use(bodyParser.urlencoded({ extended: false }));
 
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
@@ -20,17 +20,22 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(require('express-session')({
   secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: false
+  resave: true,
+  saveUninitialized: true
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+app.use(function(req, res, next){
+  res.locals.user = req.user;
+  console.log(req.user);
+	next();
+});
 
 // route handlers
 app.get('/', (req, res) => {
@@ -82,6 +87,24 @@ app.get('/album/test', (req, res)=>{
     res.send(data);
   });
 })
+
+
+
+app.get('/register', (req, res) =>{
+  res.render('register');
+});
+
+app.post('/register', (req, res) =>{
+  User.register(new User({username: req.body.registerUsername, album: []}), req.body.registerPassword, function(err, user) {
+      if (err) {
+        console.log(err);
+        res.render('register');
+      }
+      passport.authenticate('local')(req, res, function(){
+        res.redirect('/');
+      });
+  });
+});
 
 
 app.listen(process.env.PORT || 3000);
