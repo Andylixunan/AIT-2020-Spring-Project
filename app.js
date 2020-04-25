@@ -3,6 +3,9 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
+//const urlSlug = require('url-slug');
+
+
 const mongoose = require('mongoose');
 const Photo = mongoose.model('Photo');
 const Album = mongoose.model('Album');
@@ -23,15 +26,9 @@ app.use(require('express-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-
-// body parser setup
 app.use(bodyParser.urlencoded({ extended: false }));
-
-// serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 
