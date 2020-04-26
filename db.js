@@ -54,4 +54,5 @@ if (process.env.NODE_ENV === 'PRODUCTION') {
 }
 
 mongoose.connect(dbconf,  {useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.set('useCreateIndex', true);
 

@@ -30,16 +30,20 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+/*
 app.use(function(req, res, next){
   res.locals.user = req.user;
-  console.log(req.user);
 	next();
 });
+*/
 
 // route handlers
 app.get('/', (req, res) => {
   res.render('index');
+});
+
+app.post('/', passport.authenticate('local', { failureRedirect: '/'}), (req, res) =>{
+  res.redirect('/album');
 });
 
 app.get('/photo/create', (req, res) => {
@@ -57,7 +61,7 @@ app.post('/photo/create', (req, res) => {
 })
 
 app.get('/album',(req, res)=>{
-  res.render('album');
+  res.render('album', {user: req.user});
 });
 
 app.get('/album/create',(req, res)=>{
@@ -95,14 +99,21 @@ app.get('/register', (req, res) =>{
 });
 
 app.post('/register', (req, res) =>{
-  User.register(new User({username: req.body.registerUsername, album: []}), req.body.registerPassword, function(err, user) {
+  User.register(new User({username: req.body.registerUsername, album: []}), req.body.registerPassword, function(err) {
       if (err) {
         console.log(err);
         res.render('register');
       }
-      passport.authenticate('local')(req, res, function(){
-        res.redirect('/');
-      });
+      
+      const authenticate = User.authenticate();
+      authenticate(req.body.registerUsername, req.body.registerPassword, function(err,){
+        if(err){
+          console.log(err);
+        }
+        res.redirect('/')
+      })
+      
+
   });
 });
 
