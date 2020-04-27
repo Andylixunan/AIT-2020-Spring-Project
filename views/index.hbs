@@ -5,5 +5,9 @@
     Password: <input type="text" name="password">
 	<input type="submit" value="login">	
 </form>
+{{#if error}}
+<p style="color: red;">There's a problem when logging in your account, please try again!</p>
+<p style="color: red;">Problem Descriptions: {{error}}</p>
+{{/if}}
 <p>Don't have an account? Please register!</p>
 <a href="/register">Register My Account</a>	

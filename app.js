@@ -4,6 +4,7 @@ const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
 const urlSlug = require('url-slug');
+const flash = require('connect-flash');
 
 const mongoose = require('mongoose');
 const Photo = mongoose.model('Photo');
@@ -23,6 +24,7 @@ app.use(require('express-session')({
   resave: true,
   saveUninitialized: true
 }));
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -42,11 +44,11 @@ app.use(function (req, res, next) {
 
 // route handlers
 app.get('/', (req, res) => {
-  res.render('index');
+  res.render('index', {error: req.flash('error')});
 });
 
 // login
-app.post('/', passport.authenticate('local', { failureRedirect: '/' }), (req, res) => {
+app.post('/', passport.authenticate('local', { failureRedirect: '/', failureFlash: true}), (req, res) => {
   res.redirect('/album');
 });
 
@@ -137,19 +139,14 @@ app.post('/albumCreate', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-  if(!req.user){
-    res.render('notLoggedIn');
-  }
-  else{
-    res.render('register');
-  }
+  res.render('register');
 });
 
 app.post('/register', (req, res) => {
   User.register(new User({ username: req.body.registerUsername, album: [] }), req.body.registerPassword, function (err) {
     if (err) {
-      console.log(err);
-      res.render('register');
+      // console.log(err);
+      res.render('register', {error: err.message});
     }
     const authenticate = User.authenticate();
     authenticate(req.body.registerUsername, req.body.registerPassword, function (err, ) {
