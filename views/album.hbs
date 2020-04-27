@@ -1,4 +1,8 @@
 <h2>Your Albums</h2>
 <h3>Logged in as {{user.username}}</h3>
-
+{{#each album as |a|}}
+<div>
+{{a.name}}
+</div>
+{{/each}}
 <a href="/album/create">create new album</a>

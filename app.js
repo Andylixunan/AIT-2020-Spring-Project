@@ -62,9 +62,16 @@ app.post('/photo/create', (req, res) => {
 })
 
 app.get('/album',(req, res)=>{
-  // User.find();
-
-  res.render('album', {user: res.locals.user});
+  User.findOne({username: res.locals.user.username}, function(err, data){
+    const albumRefArr = data.album;
+    let albumArr = [];
+    albumRefArr.forEach(element => {
+      Album.findById(element, function(err, foundAlbum){
+        albumArr.push(foundAlbum);
+      });
+    });
+    res.render('album', {user: res.locals.user, album: albumArr});
+   });
 });
 
 app.get('/album/create',(req, res)=>{
@@ -76,7 +83,7 @@ app.post('/album/create',(req, res)=>{
     name: req.body.albumName,
     photos: []
   });
-  
+
   albumObj.save(function(err, varToStoreResult){
     User.findOne({username: res.locals.user.username}, function(err, data){
       data.album.push(varToStoreResult._id);
