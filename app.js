@@ -56,12 +56,14 @@ app.post('/photo/create', (req, res) => {
     url: req.body.photoUrl
     });
   photoObj.save(function(err, varToStoreResult){
-    //console.log(varToStoreResult._id);
+    // console.log(varToStoreResult._id);
     res.redirect('/album');
   });
 })
 
 app.get('/album',(req, res)=>{
+  // User.find();
+
   res.render('album', {user: res.locals.user});
 });
 
@@ -77,7 +79,8 @@ app.post('/album/create',(req, res)=>{
   
   albumObj.save(function(err, varToStoreResult){
     User.findOne({username: res.locals.user.username}, function(err, data){
-      //console.log(data._id);
+      data.album.push(varToStoreResult._id);
+      data.save();
     });
     res.redirect('/album');
   });
