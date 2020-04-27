@@ -32,34 +32,58 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use(function(req, res, next){
-  res.locals.user = req.user;
-	next();
+  User.findOne({username: req.user}, function(err, data){
+    if(req.user){
+    res.locals.user = req.user;
+    }
+    if(data) {
+    res.locals.userObjId = data._id;
+    }
+    next();
+  })
 });
-
 
 // route handlers
 app.get('/', (req, res) => {
   res.render('index');
 });
 
+// login
 app.post('/', passport.authenticate('local', { failureRedirect: '/'}), (req, res) =>{
   res.redirect('/album');
 });
 
-app.get('/photo/create', (req, res) => {
+app.get('/album/:albumSlug/createPhoto', (req, res) => {
   res.render('createPhoto');
 });
 
-app.post('/photo/create', (req, res) => {
+app.post('/album/:albumSlug/createPhoto', (req, res) => {
   const photoObj = new Photo({
     name: req.body.photoName,
     url: req.body.photoUrl
     });
   photoObj.save(function(err, varToStoreResult){
-    // console.log(varToStoreResult._id);
-    res.redirect('/album');
+    Album.findOne({user: res.locals.userObjId}, function(err, data){
+      data.photos.push(varToStoreResult._id);
+      data.save();
+    })
+    res.redirect('/album/'+ req.params.albumSlug);
   });
 })
+
+app.get('/album/:albumSlug', (req, res)=>{
+  Album.findOne({user: res.locals.userObjId, slug: req.params.albumSlug}, function(err, data){
+    const photoRefArr = data.photos;
+    let photoArr = [];
+    photoRefArr.forEach(element => {
+      Photo.findById(element, function(err, foundPhoto){
+        photoArr.push(foundPhoto);
+      });
+    });
+    const createLink = "/album/" + req.params.albumSlug + "/createPhoto";
+    res.render('photo', {photo: photoArr, link: createLink});
+  });
+});
 
 app.get('/album',(req, res)=>{
   User.findOne({username: res.locals.user.username}, function(err, data){
@@ -74,16 +98,18 @@ app.get('/album',(req, res)=>{
    });
 });
 
-app.get('/album/create',(req, res)=>{
+app.get('/albumCreate',(req, res)=>{
   res.render('createAlbum');
 });
 
-app.post('/album/create',(req, res)=>{
+app.post('/albumCreate',(req, res)=>{
+  const slugValue = urlSlug(req.body.albumName);
   const albumObj = new Album({
+    user: res.locals.userObjId,
     name: req.body.albumName,
-    photos: []
+    photos: [],
+    slug: slugValue
   });
-
   albumObj.save(function(err, varToStoreResult){
     User.findOne({username: res.locals.user.username}, function(err, data){
       data.album.push(varToStoreResult._id);
@@ -93,7 +119,7 @@ app.post('/album/create',(req, res)=>{
   });
 });
 
-// add test site for viewing and testing all the working forms
+/*
 app.get('/photo/test', (req, res)=>{
   Photo.find({}, function(err, data){
     res.send(data);
@@ -105,6 +131,7 @@ app.get('/album/test', (req, res)=>{
     res.send(data);
   });
 })
+*/
 
 
 app.get('/register', (req, res) =>{

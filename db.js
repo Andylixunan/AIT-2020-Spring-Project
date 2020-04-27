@@ -23,10 +23,13 @@ const Photo = new mongoose.Schema({
 });
 
 // an album
+// * an album have only one related user
 // * an album can have 0 or more photos
 const Album = new mongoose.Schema({
+  user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   name: {type: String, required: true},
-  photos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Photo' }]
+  photos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Photo' }],
+  slug: {type: String, required: true}
 });
 
 // TODO: add remainder of setup for slugs, connection, registering models, etc. below
