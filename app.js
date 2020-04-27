@@ -62,8 +62,8 @@ app.post('/album/:albumSlug/createPhoto', (req, res) => {
     Album.findOne({user: res.locals.userObjId}, function(err, data){
       data.photos.push(varToStoreResult._id);
       data.save();
+      res.redirect('/album/'+ req.params.albumSlug);
     })
-    res.redirect('/album/'+ req.params.albumSlug);
   });
 })
 
@@ -88,9 +88,9 @@ app.get('/album',(req, res)=>{
     albumRefArr.forEach(element => {
       Album.findById(element, function(err, foundAlbum){
         albumArr.push(foundAlbum);
+        res.render('album', {user: res.locals.user, album: albumArr});
       });
     });
-    res.render('album', {user: res.locals.user, album: albumArr});
    });
 });
 
@@ -110,8 +110,8 @@ app.post('/albumCreate',(req, res)=>{
     User.findOne({username: res.locals.user.username}, function(err, data){
       data.album.push(varToStoreResult._id);
       data.save();
+      res.redirect('/album');
     });
-    res.redirect('/album');
   });
 });
 

@@ -2,7 +2,7 @@
 <h3>Logged in as {{user.username}}</h3>
 {{#each album as |a|}}
 <div>
-{{a.name}}
+<a href="/album/{{a.name}}">{{a.name}}</a>
 </div>
 {{/each}}
 <a href="/albumCreate">create new album</a>
