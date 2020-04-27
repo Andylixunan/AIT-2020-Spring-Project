@@ -32,15 +32,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use(function(req, res, next){
-  User.findOne({username: req.user}, function(err, data){
     if(req.user){
-    res.locals.user = req.user;
-    }
-    if(data) {
-    res.locals.userObjId = data._id;
+      res.locals.user = req.user;
+      res.locals.userObjId = req.user._id;
     }
     next();
-  })
 });
 
 // route handlers
