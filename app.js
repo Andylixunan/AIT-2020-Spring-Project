@@ -31,13 +31,14 @@ app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.use(function(req, res, next){
-    if(req.user){
-      res.locals.user = req.user;
-      res.locals.userObjId = req.user._id;
-    }
-    next();
+app.use(function (req, res, next) {
+  if (req.user) {
+    res.locals.user = req.user;
+    res.locals.userObjId = req.user._id;
+  }
+  next();
 });
+
 
 // route handlers
 app.get('/', (req, res) => {
@@ -45,60 +46,80 @@ app.get('/', (req, res) => {
 });
 
 // login
-app.post('/', passport.authenticate('local', { failureRedirect: '/'}), (req, res) =>{
+app.post('/', passport.authenticate('local', { failureRedirect: '/' }), (req, res) => {
   res.redirect('/album');
 });
 
 app.get('/album/:albumSlug/createPhoto', (req, res) => {
-  res.render('createPhoto');
+  if (!req.user) {
+    res.render('notLoggedIn');
+  }
+  else {
+    res.render('createPhoto');
+  }
 });
 
 app.post('/album/:albumSlug/createPhoto', (req, res) => {
   const photoObj = new Photo({
     name: req.body.photoName,
     url: req.body.photoUrl
-    });
-  photoObj.save(function(err, varToStoreResult){
-    Album.findOne({user: res.locals.userObjId}, function(err, data){
+  });
+  photoObj.save(function (err, varToStoreResult) {
+    Album.findOne({ user: res.locals.userObjId }, function (err, data) {
       data.photos.push(varToStoreResult._id);
       data.save();
     })
-    res.redirect('/album/'+ req.params.albumSlug);
+    res.redirect('/album/' + req.params.albumSlug);
   });
 })
 
-app.get('/album/:albumSlug', (req, res)=>{
-  Album.findOne({user: res.locals.userObjId, slug: req.params.albumSlug}, function(err, data){
-    const photoRefArr = data.photos;
-    let photoArr = [];
-    photoRefArr.forEach(element => {
-      Photo.findById(element, function(err, foundPhoto){
-        photoArr.push(foundPhoto);
+app.get('/album/:albumSlug', (req, res) => {
+  if (!req.user) {
+    res.render('notLoggedIn');
+  }
+  else {
+    Album.findOne({ user: res.locals.userObjId, slug: req.params.albumSlug }, function (err, data) {
+      const photoRefArr = data.photos;
+      let photoArr = [];
+      photoRefArr.forEach(element => {
+        Photo.findById(element, function (err, foundPhoto) {
+          photoArr.push(foundPhoto);
+        });
       });
+      const createLink = "/album/" + req.params.albumSlug + "/createPhoto";
+      res.render('photo', { photo: photoArr, link: createLink });
     });
-    const createLink = "/album/" + req.params.albumSlug + "/createPhoto";
-    res.render('photo', {photo: photoArr, link: createLink});
-  });
+  }
 });
 
-app.get('/album',(req, res)=>{
-  User.findOne({username: res.locals.user.username}, function(err, data){
-    const albumRefArr = data.album;
-    let albumArr = [];
-    albumRefArr.forEach(element => {
-      Album.findById(element, function(err, foundAlbum){
-        albumArr.push(foundAlbum);
+app.get('/album', (req, res) => {
+  if (!req.user) {
+    res.render('notLoggedIn');
+  }
+  else {
+    User.findOne({ username: res.locals.user.username }, function (err, data) {
+      const albumRefArr = data.album;
+      let albumArr = [];
+      albumRefArr.forEach(element => {
+        Album.findById(element, function (err, foundAlbum) {
+          albumArr.push(foundAlbum);
+        });
       });
+      res.render('album', { user: res.locals.user, album: albumArr });
     });
-    res.render('album', {user: res.locals.user, album: albumArr});
-   });
+  }
 });
 
-app.get('/albumCreate',(req, res)=>{
-  res.render('createAlbum');
+app.get('/albumCreate', (req, res) => {
+  if(!req.user){
+    res.render('notLoggedIn');
+  }
+  else{
+    res.render('createAlbum');
+  }
 });
 
-app.post('/albumCreate',(req, res)=>{
+app.post('/albumCreate', (req, res) => {
   const slugValue = urlSlug(req.body.albumName);
   const albumObj = new Album({
     user: res.locals.userObjId,
@@ -106,8 +127,8 @@ app.post('/albumCreate',(req, res)=>{
     photos: [],
     slug: slugValue
   });
-  albumObj.save(function(err, varToStoreResult){
-    User.findOne({username: res.locals.user.username}, function(err, data){
+  albumObj.save(function (err, varToStoreResult) {
+    User.findOne({ username: res.locals.user.username }, function (err, data) {
       data.album.push(varToStoreResult._id);
       data.save();
     });
@@ -115,23 +136,28 @@ app.post('/albumCreate',(req, res)=>{
   });
 });
 
-app.get('/register', (req, res) =>{
-  res.render('register');
+app.get('/register', (req, res) => {
+  if(!req.user){
+    res.render('notLoggedIn');
+  }
+  else{
+    res.render('register');
+  }
 });
 
-app.post('/register', (req, res) =>{
-  User.register(new User({username: req.body.registerUsername, album: []}), req.body.registerPassword, function(err) {
+app.post('/register', (req, res) => {
+  User.register(new User({ username: req.body.registerUsername, album: [] }), req.body.registerPassword, function (err) {
+    if (err) {
+      console.log(err);
+      res.render('register');
+    }
+    const authenticate = User.authenticate();
+    authenticate(req.body.registerUsername, req.body.registerPassword, function (err, ) {
       if (err) {
         console.log(err);
-        res.render('register');
       }
-      const authenticate = User.authenticate();
-      authenticate(req.body.registerUsername, req.body.registerPassword, function(err,){
-        if(err){
-          console.log(err);
-        }
-        res.redirect('/')
-      })
+      res.redirect('/')
+    })
   });
 });
 
