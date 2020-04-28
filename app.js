@@ -96,14 +96,6 @@ app.get('/album', (req, res) => {
   else {
     User.findOne({ username: res.locals.user.username }, function (err, data) {
       const albumRefArr = data.album;
-      /*
-      let albumArr = [];
-      albumRefArr.forEach(element => {
-        Album.findById(element, function (err, foundAlbum) {
-          albumArr.push(foundAlbum);
-        });
-      });
-      */
       Album.find().where('_id').in(albumRefArr).exec((err, albumArr) => {
         res.render('album', { user: res.locals.user, album: albumArr });
       });
@@ -144,7 +136,6 @@ app.get('/register', (req, res) => {
 app.post('/register', (req, res) => {
   User.register(new User({ username: req.body.registerUsername, album: [] }), req.body.registerPassword, function (err) {
     if (err) {
-      // console.log(err);
       res.render('register', { error: err.message });
     }
     const authenticate = User.authenticate();
@@ -156,6 +147,26 @@ app.post('/register', (req, res) => {
     })
   });
 });
+
+app.get('/albumSearch', (req, res)=>{
+  if (!req.user) {
+    res.render('notLoggedIn');
+  }
+  else {
+    res.render('searchAlbum');
+  }
+})
+
+app.post('/albumSearch', (req, res)=>{
+  Album.find({}, (err, albums)=>{
+    const searchReq = req.body.searchAlbumName;
+    const searchRes = albums.filter(e => e.name.includes(searchReq));
+    res.render('searchAlbum', {album: searchRes});
+  })
+})
+
+
+
 
 app.get('/logout', (req, res) => {
   req.logout();

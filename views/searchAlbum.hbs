@@ -1,0 +1,10 @@
+<form method="POST" action="">
+    Album Name: <input type="text" name="searchAlbumName">
+	<input type="submit" value="search">	
+</form>
+<br>
+{{#each album as |a|}}
+<div>
+<a href="/album/{{a.slug}}">{{a.name}}</a>
+</div>
+{{/each}}
