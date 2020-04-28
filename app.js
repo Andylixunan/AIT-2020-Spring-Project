@@ -140,7 +140,7 @@ app.post('/register', (req, res) => {
       res.render('register', { error: err.message });
     }
     const authenticate = User.authenticate();
-    authenticate(req.body.registerUsername, req.body.registerPassword, function (err, ) {
+    authenticate(req.body.registerUsername, req.body.registerPassword, function (err) {
       if (err) {
         console.log(err);
       }

@@ -7,6 +7,7 @@ const createPhotoNameInput = document.querySelector('#createPhotoNameInput');
 const createPhotoUrlInput = document.querySelector('#createPhotoUrlInput');
 const createPhotoError = document.querySelector('#createPhotoError');
 
+if(createAlbumForm){
 createAlbumForm.addEventListener('submit', function (event) {
     if (createAlbumInput.value.length == 0) {
         createAlbumInputErr.textContent = 'You need to enter an album name. (This field cannot be empty)';
@@ -19,7 +20,8 @@ createAlbumForm.addEventListener('submit', function (event) {
         event.preventDefault();
     }
 });
-
+}
+if(createPhotoForm){
 createPhotoForm.addEventListener('submit', function (event) {
     if (createPhotoNameInput.value.length == 0 || createPhotoUrlInput.value.length == 0) {
         createPhotoError.textContent = 'You need to enter a photo name and a url. (Both fields cannot be empty)';
@@ -27,3 +29,4 @@ createPhotoForm.addEventListener('submit', function (event) {
         event.preventDefault();
     }
 });
+}
