@@ -32,7 +32,6 @@ const Album = new mongoose.Schema({
   slug: {type: String, required: true}
 });
 
-// TODO: add remainder of setup for slugs, connection, registering models, etc. below
 
 mongoose.model('User', User);
 mongoose.model('Photo', Photo);
