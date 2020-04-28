@@ -43,11 +43,11 @@ app.use(function (req, res, next) {
 
 // route handlers
 app.get('/', (req, res) => {
-  res.render('index', {error: req.flash('error')});
+  res.render('index', { error: req.flash('error') });
 });
 
 // login
-app.post('/', passport.authenticate('local', { failureRedirect: '/', failureFlash: true}), (req, res) => {
+app.post('/', passport.authenticate('local', { failureRedirect: '/', failureFlash: true }), (req, res) => {
   res.redirect('/album');
 });
 
@@ -66,7 +66,7 @@ app.post('/album/:albumSlug/createPhoto', (req, res) => {
     url: req.body.photoUrl
   });
   photoObj.save(function (err, varToStoreResult) {
-    Album.findOne({ user: res.locals.userObjId }, function (err, data) {
+    Album.findOne({ user: res.locals.userObjId, slug: req.params.albumSlug}, function (err, data) {
       data.photos.push(varToStoreResult._id);
       data.save();
     })
@@ -81,14 +81,10 @@ app.get('/album/:albumSlug', (req, res) => {
   else {
     Album.findOne({ user: res.locals.userObjId, slug: req.params.albumSlug }, function (err, data) {
       const photoRefArr = data.photos;
-      let photoArr = [];
-      photoRefArr.forEach(element => {
-        Photo.findById(element, function (err, foundPhoto) {
-          photoArr.push(foundPhoto);
-        });
+      Photo.find().where('_id').in(photoRefArr).exec((err, photoArr) => {
+        const createLink = "/album/" + req.params.albumSlug + "/createPhoto";
+        res.render('photo', { photo: photoArr, link: createLink });
       });
-      const createLink = "/album/" + req.params.albumSlug + "/createPhoto";
-      res.render('photo', { photo: photoArr, link: createLink });
     });
   }
 });
@@ -100,22 +96,26 @@ app.get('/album', (req, res) => {
   else {
     User.findOne({ username: res.locals.user.username }, function (err, data) {
       const albumRefArr = data.album;
+      /*
       let albumArr = [];
       albumRefArr.forEach(element => {
         Album.findById(element, function (err, foundAlbum) {
           albumArr.push(foundAlbum);
         });
       });
-      res.render('album', { user: res.locals.user, album: albumArr });
+      */
+      Album.find().where('_id').in(albumRefArr).exec((err, albumArr) => {
+        res.render('album', { user: res.locals.user, album: albumArr });
+      });
     });
   }
 });
 
 app.get('/albumCreate', (req, res) => {
-  if(!req.user){
+  if (!req.user) {
     res.render('notLoggedIn');
   }
-  else{
+  else {
     res.render('createAlbum');
   }
 });
@@ -145,7 +145,7 @@ app.post('/register', (req, res) => {
   User.register(new User({ username: req.body.registerUsername, album: [] }), req.body.registerPassword, function (err) {
     if (err) {
       // console.log(err);
-      res.render('register', {error: err.message});
+      res.render('register', { error: err.message });
     }
     const authenticate = User.authenticate();
     authenticate(req.body.registerUsername, req.body.registerPassword, function (err, ) {
