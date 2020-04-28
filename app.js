@@ -32,7 +32,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+// middleware for allowing accessing user info for all route handlers
 app.use(function (req, res, next) {
   if (req.user) {
     res.locals.user = req.user;
@@ -40,7 +40,6 @@ app.use(function (req, res, next) {
   }
   next();
 });
-
 
 // route handlers
 app.get('/', (req, res) => {

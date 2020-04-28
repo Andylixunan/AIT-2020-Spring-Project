@@ -14,7 +14,8 @@ can keep track of multiple photo albums.
 The application will store Users, Albums and Photos(url)
 
 * users can have multiple albums (via references)
-* each album can have multiple photos' urls (by embedding)
+* each album can have multiple photos' urls (via references)
+* each album can have only one user (via reference)
 
 
 An Example User:
@@ -22,22 +23,29 @@ An Example User:
 ```javascript
 {
   username: "photokeeper",
-  hash: // a password hash,
-  albums: // an array of references to album documents
-}
+  hash:  "the hash", // a password hash
+  album: [ObjectId(1234)]// an array of references to album documents
+};
 ```
 
-An Example List with Embedded Items:
+An Example Album:
 
 ```javascript
 {
-  user: // a reference to a User object
+  user: ObjectId(4321), // a reference to a User object
   name: "my first album",
-  photos: [
-    { name: "selfie", url: "www.foo.bar"},
-    { name: "me and parents", url: "www.bar.qux"},
-  ]
-}
+  photos: [ObjectId(4567)], // an array of references to photo documents
+  slug: "my-first-album"
+};
+```
+
+An Example Photo
+
+```javascript
+{
+  name: "my first photo",
+  url: "www.foo.jpg"
+};
 ```
 
 
@@ -95,4 +103,5 @@ An Example List with Embedded Items:
 
 1. [passport.js authentication docs](http://passportjs.org/docs) 
 
+2. [mdn documents for client-side form validation](https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation)
 
