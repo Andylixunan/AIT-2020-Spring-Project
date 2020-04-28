@@ -1,5 +1,7 @@
 <h2>Create New Album!</h2>
-<form method="POST" action="">
-    Your New Album Name: <input type="text" name="albumName">
+<form id="createAlbumForm" method="POST" action="">
+    Your New Album Name: <input id='createAlbumInput' type="text" name="albumName">
+    <span id='createAlbumError' class="error" aria-live="polite"></span>
 	<input type="submit" value="create!">	
-</form>
+</form><br>
+<a href="/album">Back to View All Albums</a>

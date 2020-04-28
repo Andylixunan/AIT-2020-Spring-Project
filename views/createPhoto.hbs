@@ -1,6 +1,7 @@
 <h2>Create New Photo</h2>
-<form method="POST" action="">
-    Name: <input type="text" name="photoName">
-    url: <input type="text" name="photoUrl">
+<form id='createPhotoForm' method="POST" action="">
+    Name: <input id='createPhotoNameInput' type="text" name="photoName">
+    Url: <input id='createPhotoUrlInput' type="text" name="photoUrl">
+    <span id='createPhotoError' class="error" aria-live="polite"></span>
 	<input type="submit" value="upload">	
 </form>
