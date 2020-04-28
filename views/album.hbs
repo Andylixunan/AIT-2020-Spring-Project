@@ -1,10 +1,12 @@
 <h2>Your Albums</h2>
-<h3>Logged in as {{user.username}}</h3>
+<h3>Logged in as {{user.username}}</h3><br>
 {{#each album as |a|}}
 <div>
-<a href="/album/{{a.slug}}">{{a.name}}</a>
+<a href="/album/{{a.slug}}" style="color:coral">{{a.name}}</a>
 </div>
 {{/each}}
+<br>
+<br>
 <a href="/albumCreate">create new album</a><br>
 <a href="/albumSearch">Search Albums by Name</a><br>
 <a href="/photoSearch">Search Photos by Name (under all albums)</a>

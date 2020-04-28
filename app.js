@@ -83,7 +83,8 @@ app.get('/album/:albumSlug', (req, res) => {
       const photoRefArr = data.photos;
       Photo.find().where('_id').in(photoRefArr).exec((err, photoArr) => {
         const createLink = "/album/" + req.params.albumSlug + "/createPhoto";
-        res.render('photo', { photo: photoArr, link: createLink });
+        const searchLink = "/album/" + req.params.albumSlug + "/searchPhoto";
+        res.render('photo', { photo: photoArr, createLink: createLink, searchLink: searchLink});
       });
     });
   }
@@ -183,6 +184,25 @@ app.post('/photoSearch', (req, res)=>{
   })
 })
 
+app.get('/album/:albumSlug/searchPhoto', (req, res)=>{
+  if (!req.user) {
+    res.render('notLoggedIn');
+  }
+  else {
+    res.render('searchPhotoSpecific');
+  }
+})
+
+app.post('/album/:albumSlug/searchPhoto', (req, res)=>{
+  Album.findOne({user: res.locals.userObjId, slug: req.params.albumSlug}, (err, data)=>{
+    const photoRefArr = data.photos;
+    Photo.find().where('_id').in(photoRefArr).exec((err, photoArr) => {
+      const searchReq = req.body.searchPhotoNameSpecific;
+      const searchRes = photoArr.filter(e => e.name.includes(searchReq));
+      res.render('searchPhotoSpecific', {photo: searchRes});
+    });
+  })
+})
 
 
 
