@@ -158,5 +158,10 @@ app.post('/register', (req, res) => {
   });
 });
 
+app.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
+
 
 app.listen(process.env.PORT || 3000);
