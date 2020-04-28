@@ -1,0 +1,11 @@
+<form method="POST" action="">
+    Photo Name: <input type="text" name="searchPhotoName">
+	<input type="submit" value="search">	
+</form>
+<br>
+{{#each photo as |p|}}
+<img src={{p.url}} alt={{p.name}}>
+<p>{{p.name}}</p>
+{{/each}}
+<br>
+<a href="/album">Back to View All Albums</a>

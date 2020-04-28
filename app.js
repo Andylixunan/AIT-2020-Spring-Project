@@ -166,6 +166,24 @@ app.post('/albumSearch', (req, res)=>{
 })
 
 
+app.get('/photoSearch', (req, res)=>{
+  if (!req.user) {
+    res.render('notLoggedIn');
+  }
+  else {
+    res.render('searchPhoto');
+  }
+})
+
+app.post('/photoSearch', (req, res)=>{
+  Photo.find({}, (err, photos)=>{
+    const searchReq = req.body.searchPhotoName;
+    const searchRes = photos.filter(e => e.name.includes(searchReq));
+    res.render('searchPhoto', {photo: searchRes});
+  })
+})
+
+
 
 
 app.get('/logout', (req, res) => {
