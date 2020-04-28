@@ -96,7 +96,7 @@ An Example Photo
 8 points total out of 8 required points 
 
 
-## [Link to Initial Main Project File](app.js) 
+## [Link to Main Project File](app.js) 
 
 
 ## Annotations / References Used
